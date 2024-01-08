@@ -1,18 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>hiloGuys</title>
-    <link rel="stylesheet" href="./style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inika:wght@400;700&family=Roboto:wght@100;300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <div class="contianer">
-        <nav></nav>
-        <main></main>
-        <footer></footer>
+      <aside class="left_aside">
+        <a href="/">
+          <h2 class="left_heading">Hilo Guys</h2>
+        </a>
+        <ul class="links">
+          <a href="#" class="link">
+            <div class="icon">
+              <img src="./images/home.svg" alt="Home" />
+            </div>
+            <li>Home</li>
+          </a>
+          <a href="#" class="link">
+            <div class="icon">
+              <img src="./images/search.svg" alt="Search" />
+            </div>
+            <li>Search</li>
+          </a>
+          <a href="#" class="link">
+            <div class="icon">
+              <img src="./images/explore.png" alt="Explore" />
+            </div>
+            <li>Explore</li>
+          </a>
+          <a href="#" class="link">
+            <div class="icon">
+              <img src="./images/message.png" alt="Message" />
+            </div>
+            <li>Message</li>
+          </a>
+          <a href="#" class="link">
+            <div class="icon">
+              <img src="./images/heart.png" alt="Notification" />
+            </div>
+            <li>Notification</li>
+          </a>
+          <a href="#" class="link">
+            <div class="icon">
+              <img src="./images/plus.png" alt="Post" />
+            </div>
+            <li>Post</li>
+          </a>
+          <a href="#" class="link">
+            <div class="icon">
+              <img src="./images/user.png" alt="User" />
+            </div>
+            <li>Profile</li>
+          </a>
+        </ul>
+      </aside>
+      <!-- main content -->
+      <main class="main">
+        <h1 class="post_heading">Posts</h1>
+        <div class="post_container">
+          <div class="user">
+            <div class="user_info">
+              <div class="user_img icon">
+                <img src="./images/user.png" alt="User" />
+              </div>
+              <p class="username">username</p>
+            </div>
+            <div class="icon">
+              <img class="menu" src="./images/options.png" alt="options" />
+            </div>
+          </div>
+          <div class="post">
+            <img src="./images/posts.jpg" alt="post" />
+          </div>
+          <div class="options">
+            <div class="post_option">
+              <div class="icon">
+                <img src="./images/heart.png" alt="Like" />
+              </div>
+              <div class="icon">
+                <img src="./images/comment.png" alt="Comment" />
+              </div>
+              <div class="icon">
+                <img src="./images/share.png" alt="Share" />
+              </div>
+            </div>
+            <div class="icon">
+              <img src="./images/save.png" alt="Save" />
+            </div>
+          </div>
+          <span class="post_likes">1932 likes</span>
+          <div class="post_info">
+            <span class="post_info_heading">username</span>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur,
+            veniam! 
+          </div>
+          <p class="comment">View all 67 comments</p>
+        </div>
+        <div class="post_container">
+          <div class="user">
+            <div class="user_info">
+              <div class="user_img icon">
+                <img src="./images/user.png" alt="User" />
+              </div>
+              <p class="username">username</p>
+            </div>
+            <div class="icon">
+              <img class="menu" src="./images/options.png" alt="options" />
+            </div>
+          </div>
+          <div class="post">
+            <img src="./images/posts.jpg" alt="post" />
+          </div>
+          <div class="options">
+            <div class="post_option">
+              <div class="icon">
+                <img src="./images/heart.png" alt="Like" />
+              </div>
+              <div class="icon">
+                <img src="./images/comment.png" alt="Comment" />
+              </div>
+              <div class="icon">
+                <img src="./images/share.png" alt="Share" />
+              </div>
+            </div>
+            <div class="icon">
+              <img src="./images/save.png" alt="Save" />
+            </div>
+          </div>
+          <span class="post_likes">1932 likes</span>
+          <div class="post_info">
+            <span class="post_info_heading">username</span>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur,
+            veniam! 
+          </div>
+          <p class="comment">View all 67 comments</p>
+        </div>
+      </main>
+
+      <!-- right side -->
+      <aside class="right_aside">
+        <div class="profile user">
+          <div class="profile_info user_info">
+            <div class="profile_img icon">
+              <img src="./images/user.png" alt="User" />
+            </div>
+            <div class="profile_detail">
+              <p class="profile_username">userName</p>
+              <p class="profile_name">User</p>
+            </div>
+          </div>
+          <button class="profile_btn">Switch</button>
+        </div>
+        <div class="suggested_users">
+          <span class="suggested">
+            <p class="suggest_text">Suggested for you</p>
+            <button class="suggest_btn">See All</button>
+          </span>
+          <div class="profile user">
+            <div class="profile_info user_info">
+              <div class="profile_img icon">
+                <img src="./images/user.png" alt="User" />
+              </div>
+              <div class="profile_detail">
+                <p class="profile_username">userName</p>
+                <p class="profile_name">User</p>
+              </div>
+            </div>
+            <button class="profile_btn">Switch</button>
+          </div>
+          <div class="profile user">
+            <div class="profile_info user_info">
+              <div class="profile_img icon">
+                <img src="./images/user.png" alt="User" />
+              </div>
+              <div class="profile_detail">
+                <p class="profile_username">userName</p>
+                <p class="profile_name">User</p>
+              </div>
+            </div>
+            <button class="profile_btn">Switch</button>
+          </div>
+          <div class="profile user">
+            <div class="profile_info user_info">
+              <div class="profile_img icon">
+                <img src="./images/user.png" alt="User" />
+              </div>
+              <div class="profile_detail">
+                <p class="profile_username">userName</p>
+                <p class="profile_name">User</p>
+              </div>
+            </div>
+            <button class="profile_btn">Switch</button>
+          </div>
+        </div>
+      </aside>
     </div>
 
     <script type="module" src="./app.js"></script>
-</body> 
+  </body>
 </html>
