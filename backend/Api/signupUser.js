@@ -1,7 +1,6 @@
 import express from "express";
 import bcrypt from 'bcrypt'
-import UserSchema from "../model/UserSchema.js";
-
+import UserSchema from '../model/UserSchema.js'
 const router = express.Router();
 
 router.post("/signup", async (req, res) => {
@@ -30,9 +29,10 @@ router.post("/signup", async (req, res) => {
         email:body.email
     });
     const savedUser = await newUser.save();
-    const { password, ...data } = newUser._doc;
+    const { password, ...data } = savedUser._doc;
     res.status(200).json(data);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Something went wrong" });
   }
 });

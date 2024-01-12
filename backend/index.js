@@ -4,9 +4,10 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { createServer } from "http";
 import mongoose from "mongoose";
-// import userApi from './Api/usersApi.js'
+import userApi from './Api/usersApi.js'
 import loginUser from './Api/loginUser.js'
 import signupUser from './Api/signupUser.js'
+import friendsApi from './Api/friendsApi.js'
 
 // for static files
 const __filename = fileURLToPath(import.meta.url);
@@ -37,7 +38,8 @@ connectDB()
 // all apis
 app.use(signupUser)
 app.use(loginUser)
-
+app.use(userApi)
+app.use(friendsApi)
 http.listen(3000, () => {
   console.log("server is running");
 });

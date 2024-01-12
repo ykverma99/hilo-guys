@@ -6,14 +6,14 @@ const user = new mongoose.Schema({
     email:String,
     password:String,
     profilePhoto:String,
-    posts:{
-        type:mongoose.SchemaTypes.ObjectId,
+    posts:[{
+        type:mongoose.Schema.Types.ObjectId,
         ref:"PostSchema"
-    },
-    friends:{
-        type:mongoose.SchemaTypes.ObjectId,
+    }],
+    friends:[{
+        type:mongoose.Schema.Types.ObjectId,
         ref:"FriendSchema"
-    }
+    }]
 })
 
 const UserSchema = mongoose.model("UserSchema",user)
