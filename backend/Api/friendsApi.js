@@ -4,26 +4,6 @@ import UserSchema from "../model/UserSchema.js";
 
 const router = express.Router();
 
-// router.get("/users",async(req,res)=>{
-//     try {
-
-//         const users = await FriendSchema.find()
-//         res.status(200).json(users)
-//     } catch (error) {
-//         res.status(500).json({error:"Something went wrong"})
-//     }
-// })
-
-// router.get("/user/:userId",async(req,res)=>{
-//     try {
-//         const userId = req.params.userId
-//         const user = await FriendSchema.findById(userId)
-//         res.status(200).json(user)
-//     } catch (error) {
-//         res.status(500).json({error:"Something went wrong"})
-//     }
-// })
-
 router.post("/friends", async (req, res) => {
   try {
     const { user1, user2 } = req.body;
@@ -35,12 +15,62 @@ router.post("/friends", async (req, res) => {
     const friendShip = new FriendSchema({ user1, user2 });
     const friends = await friendShip.save();
 
-    user_1.friends.push(friends._id)
-    user_2.friends.push(friends._id)
-    await Promise.all([user_1.save(),user_2.save()])
+    user_1.friends.push(friends._id);
+    user_2.friends.push(friends._id);
+    await Promise.all([user_1.save(), user_2.save()]);
     res.status(200).json(friends);
   } catch (error) {
-    console.log(error);
+    res.status(500).json({ error: "Something went wrong" });
+  }
+});
+
+
+router.get("/friends",async(req,res)=>{
+  try {
+    const friendShip = await FriendSchema.find();
+    res.status(200).json({friendShip})
+  } catch (error) {
+    res.status(500).json({error:"Something went wrong"})
+  }
+})
+router.get("/friends/:userId",async(req,res)=>{})
+router.delete("/friends/:user1/:user2", async (req, res) => {
+  try {
+    const { user1, user2 } = req.params;
+
+    // Find the friendship by the user IDs
+    const friendship = await FriendSchema.findOne({
+      $or: [
+        { user1, user2 },
+        { user1: user2, user2: user1 },
+      ],
+    });
+
+    if (!friendship) {
+      return res.status(404).json({ error: "Friendship not found" });
+    }
+
+    // Remove the friendship ID from the users' friends arrays
+    const user1Instance = await UserSchema.findById(user1);
+    const user2Instance = await UserSchema.findById(user2);
+
+    if (user1Instance && user2Instance) {
+      user1Instance.friends.pull(friendship._id);
+      user2Instance.friends.pull(friendship._id);
+      await Promise.all([user1Instance.save(), user2Instance.save()]);
+    }
+
+    // Delete the friendship document from MongoDB
+    // await friendship.remove();
+    const friends = await FriendSchema.findOneAndDelete({
+      $or: [
+        { user1, user2 },
+        { user1: user2, user2: user1 },
+      ],
+    });
+
+    res.status(200).json({ message: "Friendship deleted successfully" });
+  } catch (error) {
     res.status(500).json({ error: "Something went wrong" });
   }
 });

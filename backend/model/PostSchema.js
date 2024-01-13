@@ -5,7 +5,12 @@ const post = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"UserSchema",
     },
-    content:String
+    content:String,
+    likes:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"UserSchema"
+    },
+    caption:String
 })
 
 const PostSchema = mongoose.model("PostSchema",post)

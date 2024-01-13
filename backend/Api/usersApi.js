@@ -21,13 +21,21 @@ router.get("/users", async (req, res) => {
 router.get("/user/:userId", async (req, res) => {
   try {
     const userId = req.params.userId;
-    const user = await UserSchema.findById(userId).populate({
-      path: "friends",
-      populate: {
-        path: "user2",
-        model: "UserSchema",
-      },
-    });
+    const user = await UserSchema.findById(userId)
+      .populate({
+        path: "friends",
+        populate: {
+          path: "user2",
+          model: "UserSchema",
+        },
+      })
+      .populate({
+        path: "post",
+        populate: {
+          path: "user",
+          model: "UserSchema",
+        },
+      });
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ error: "Something went wrong" });
