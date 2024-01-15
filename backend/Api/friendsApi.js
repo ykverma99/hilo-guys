@@ -33,7 +33,6 @@ router.get("/friends",async(req,res)=>{
     res.status(500).json({error:"Something went wrong"})
   }
 })
-router.get("/friends/:userId",async(req,res)=>{})
 router.delete("/friends/:user1/:user2", async (req, res) => {
   try {
     const { user1, user2 } = req.params;
