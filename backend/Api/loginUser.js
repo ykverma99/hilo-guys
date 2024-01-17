@@ -28,7 +28,10 @@ router.post("/login", async (req, res) => {
         const userFind = await UserSchema.findById({ _id: user.id }).select(
           "-password"
         );
-        res.status(200).json(userFind);
+        return res.status(200).json(userFind);
+      }else{
+        
+        return res.status(404).json({error:"Enter correct value"});
       }
     }
   } catch (error) {

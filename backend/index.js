@@ -1,5 +1,6 @@
 import bodyParser from "body-parser";
 import express from "express";
+import cors from 'cors'
 import path from "path";
 import { fileURLToPath } from "url";
 import { createServer } from "http";
@@ -18,6 +19,7 @@ const staticPath = path.join(__dirname, "../public");
 const app = express();
 const http = createServer(app);
 
+app.use(cors())
 app.use(bodyParser.json());
 app.use(express.static(staticPath));
 

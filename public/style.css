@@ -53,6 +53,7 @@ li {
   height: 5vh;
   margin: 10px 0;
   border-radius: 8px;
+  cursor: pointer;
 }
 .link:hover{
   background-color: #f0f0f0;
@@ -126,7 +127,8 @@ li {
   }
 }
 .post_container{
-  width: 45vh;
+  width: 25vw;
+  /* height: 45vh; */
   /* border-bottom: 1px solid gray; */
   padding: 10px 0;
   background-color: #edf2f8;
@@ -140,6 +142,7 @@ li {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 10px;
 }
 .user_info{
   display: flex;
@@ -151,7 +154,7 @@ li {
   width: 30px !important;
  }
 .post{
-  height: 40vh;
+  height: 45vh;
   width: 100%;
 }
 .post>img{
@@ -163,6 +166,7 @@ li {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 10px;
 }
 .post_option{
   display: flex;
@@ -172,9 +176,13 @@ li {
 .post_likes{
   font-weight: 600;
   font-size: 0.9rem;
+  padding: 0 10px;
+
 }
 .post_info{
   font-size: small;
+  padding: 0 10px;
+
 }
 .post_info_heading{
   font-size: large;
@@ -184,4 +192,6 @@ li {
 .comment{
   color: gray;
   font-size: small;
+  padding: 0 10px;
+
 }

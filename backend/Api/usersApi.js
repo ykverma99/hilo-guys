@@ -107,7 +107,9 @@ router.delete("/user/:id",async(req,res)=>{
     const userId = req.params.id
     const user = await UserSchema.findById(userId)  
     const deleteUser = await UserSchema.findByIdAndDelete(userId)  
-    await fspromises.unlink(user.profilePhoto)
+    if(user.profilePhoto){
+      await fspromises.unlink(user.profilePhoto)
+    }
     if(!deleteUser){
       return res.status(404).json({error:"User not found"})
     }

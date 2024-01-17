@@ -96,3 +96,9 @@ button {
   font-family: var(--primary-font);
   cursor: pointer;
 }
+.error{
+  color: white;
+  text-align: left;
+  width: 90%;
+  display: none;
+}
