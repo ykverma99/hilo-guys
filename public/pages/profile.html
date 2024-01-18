@@ -66,13 +66,13 @@
 
       <!-- Select Profile photo -->
       <div id="select_image" class="select_profile">
-        <form id="profile_form" class="profile_form">
+        <form id="profile_form" enctype="multipart/form-data" class="profile_form">
           <label class="photo_select" for="profilePic">
             <img class="camera_photo" src="../images/camera.png" alt="camera" />
             Select Photo
           </label>
-          <input type="file" id="profilePic" />
-          <button class="upload_btn">Upload Photo</button>
+          <input type="file" id="profilePic" name="profilePhoto" />
+          <button id="sendProfile" type="button" class="upload_btn">Upload Photo</button>
         </form>
       </div>
 
@@ -83,11 +83,12 @@
             <div class="user_image">
               <img
                 id="profile_image"
-                src="../images/profile_pic.jpeg"
+                src="../images/user.png"
                 alt="user"
               />
             </div>
             <img
+            hidden
               id="open_modal"
               class="camera_icon"
               src="../images/camera.png"
@@ -132,30 +133,12 @@
           <!-- post section -->
 
           <div id="post_section" class="grid_post">
-            <div class="post_pic">
-              <img src="../images/profile_pic.jpeg" alt="" />
+            <!-- <div class="post_pic"> -->
+              <!-- <img src="../images/profile_pic.jpeg" alt="" /> -->
               <!-- <div  class="post_like">
                 <img src="../images/heart.png" alt="like" />
               </div> -->
-            </div>
-            <div class="post_pic">
-              <img src="../images/profile_pic.jpeg" alt="" />
-              <!-- <div  class="post_like">
-                <img src="../images/heart.png" alt="like" />
-              </div> -->
-            </div>
-            <div class="post_pic">
-              <img src="../images/profile_pic.jpeg" alt="" />
-              <!-- <div  class="post_like">
-                <img src="../images/heart.png" alt="like" />
-              </div> -->
-            </div>
-            <div class="post_pic">
-              <img src="../images/profile_pic.jpeg" alt="" />
-              <!-- <div  class="post_like">
-                <img src="../images/heart.png" alt="like" />
-              </div> -->
-            </div>
+            <!-- </div> -->
           </div>
         </div>
       </main>

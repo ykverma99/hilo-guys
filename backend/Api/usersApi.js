@@ -9,7 +9,7 @@ import {promises as fspromises} from 'fs'
 const router = express.Router();
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "profilePic/");
+    cb(null, "public/images/profilePic/");
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + "_" + file.originalname);

@@ -180,11 +180,11 @@ li {
     object-fit: cover;
 }
 
-.post_like:hover{
+.post_like{
     position: absolute;
     top: 0;
     z-index: 1;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     height: 100%;

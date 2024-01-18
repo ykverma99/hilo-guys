@@ -7,7 +7,7 @@ import {promises as fspromises} from 'fs'
 const router = express.Router();
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "posts/");
+    cb(null, "public/images/posts/");
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + "_" + file.originalname);
@@ -18,7 +18,7 @@ const upload = multer({ storage: storage });
 router.post("/upload", upload.single("postImage"), async (req, res) => {
   try {
     const { user, caption } = req.body;
-    const imagePath = req.file.path;
+    const imagePath = req.file.filename;
     const User = await UserSchema.findById(user)
     if(!User){
         res.status(404).json({error:"No user found"})
@@ -31,6 +31,7 @@ router.post("/upload", upload.single("postImage"), async (req, res) => {
     })
     const newPost = await post.save()
     User.post.push(newPost._id)
+    console.log(typeof newPost.user);
     await User.save()
     res.status(200).json(newPost)
   } catch (error) {

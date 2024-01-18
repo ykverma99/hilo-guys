@@ -6,10 +6,10 @@ const post = new mongoose.Schema({
         ref:"UserSchema",
     },
     content:String,
-    likes:{
+    likes:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:"UserSchema"
-    },
+    }],
     caption:String
 })
 
