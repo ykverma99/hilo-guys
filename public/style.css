@@ -23,6 +23,9 @@ li {
   width: 100%;
   object-fit: cover;
 }
+.user_profile{
+  border-radius: 50%;
+}
 .contianer {
   display: grid;
   grid-template-columns: 350px 1fr 450px;
@@ -75,6 +78,7 @@ li {
   border: 0;
   color: var(--primary-color);
   font-weight: bold;
+  cursor: pointer;
 }
 .suggested{
   display: flex;
@@ -147,7 +151,7 @@ li {
 .user_info{
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 8px;
   font-weight: 500;
 }
 .menu{

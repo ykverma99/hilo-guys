@@ -23,6 +23,9 @@ li {
   width: 100%;
   object-fit: cover;
 }
+.user_profile{
+  border-radius: 50%;
+}
 .container {
   display: grid;
   grid-template-columns: 80px 400px 1fr;

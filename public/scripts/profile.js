@@ -1,4 +1,4 @@
-import { getUsers, singleUser } from "../services/Menu.js";
+import { getUsers, setUser, singleUser } from "../services/Menu.js";
 
 let userAuth = null;
 document.addEventListener("DOMContentLoaded", () => {
@@ -14,6 +14,7 @@ function getUserNameFromUrl() {
 }
 
 const profileImage = document.getElementById("profile_image");
+const userProfileIcon = document.getElementById("user_img")
 const selectImageContainer = document.getElementById("select_image");
 const modal = document.getElementById("open_modal");
 const profileForm = document.getElementById("profile_form");
@@ -29,19 +30,25 @@ modal.addEventListener("click", () => {
 
 profileBtn.addEventListener("click", async (event) => {
   try {
-    const formData = new FormData()
-    const profileInputPic = document.querySelector('input[name="profilePhoto"]')
-    if(profileInputPic.files.length>0){
-      formData.append("profilePhoto",profileInputPic.files[0])
-      const res = await fetch(`http://localhost:3000/user/${userAuth.user._id}`,{
-        method:"PATCH",
-        body:formData
-      })
-      const body = await res.json()
-      if(res.ok){
-        console.log(body);
-      }else{
-        console.log("error",body);
+    const formData = new FormData();
+    const profileInputPic = document.querySelector(
+      'input[name="profilePhoto"]'
+    );
+    if (profileInputPic.files.length > 0) {
+      formData.append("profilePhoto", profileInputPic.files[0]);
+      const res = await fetch(
+        `http://localhost:3000/user/${userAuth.user._id}`,
+        {
+          method: "PATCH",
+          body: formData,
+        }
+      );
+      const body = await res.json();
+      if (res.ok) {
+        setUser(body);
+        profileImage.src = `${window.location.origin}/images/profilePic/${body.profilePhoto}`;
+      } else {
+        console.log("error", body);
       }
       selectImageContainer.style.display = "none";
     }
@@ -52,11 +59,15 @@ profileBtn.addEventListener("click", async (event) => {
 });
 
 window.addEventListener("load", async () => {
+  userProfileIcon.src = userAuth.user.profilePhoto ? `${window.location.origin}/images/profilePic/${userAuth.user.profilePhoto}`:"../images/user.png"
   const usernameFromUrl = getUserNameFromUrl();
   const user = await singleUser(usernameFromUrl);
   document.getElementById("username").textContent = usernameFromUrl;
   const profileBtn_1 = document.getElementById("profile_btn_1");
   const profileBtn_2 = document.getElementById("profile_btn_2");
+  profileImage.src = user.profilePhoto
+    ? `${window.location.origin}/images/profilePic/${user.profilePhoto}`
+    : "../images/user.png";
   postCount.textContent = user.post.length;
   friendsCount.textContent = user.friends.length;
   if (user._id === userAuth.user._id) {
@@ -80,10 +91,34 @@ window.addEventListener("load", async () => {
       postLikes.className = "post_like";
       imgContainer.append(postImg, postLikes);
       postContainer.append(imgContainer);
-      const hearImg = document.createElement("img");
-      hearImg.src = "../images/heart.png";
-      postLikes.append(hearImg);
-      hearImg.addEventListener("click", like.bind(post));
+      const heartImg = document.createElement("img");
+      heartImg.src = post.likes.includes(user._id)
+        ? "../images/red-heart.png"
+        : "../images/white-heart.png";
+      heartImg.style.cursor = "pointer";
+      postLikes.append(heartImg);
+      heartImg.addEventListener("click", async () => {
+        try {
+          const res = await fetch(
+            `http://localhost:3000/post/${post._id}/${user._id}`,
+            {
+              method: "PATCH",
+            }
+          );
+          const data = await res.json();
+          if (res.ok) {
+            if (data.likes.includes(user._id)) {
+              heartImg.src = "../images/red-heart.png";
+            } else {
+              heartImg.src = "../images/white-heart.png";
+            }
+          } else {
+            console.log(res.status);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      });
       imgContainer.addEventListener("mouseenter", () => {
         postLikes.style.display = "flex";
       });
@@ -93,7 +128,3 @@ window.addEventListener("load", async () => {
     });
   }
 });
-function like(e) {
-  console.log(this);
-  console.log(e);
-}

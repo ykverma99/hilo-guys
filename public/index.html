@@ -57,7 +57,12 @@
           </li>
           <li id="profile_link" class="link">
             <div class="icon">
-              <img src="./images/user.png" alt="User" />
+              <img
+                id="user_img"
+                class="user_profile"
+                src="./images/user.png"
+                alt="User"
+              />
             </div>
             <p>Profile</p>
           </li>
@@ -66,84 +71,7 @@
       <!-- main content -->
       <main class="main">
         <h1 class="post_heading">Posts</h1>
-        <div class="post_container">
-          <div class="user">
-            <div class="user_info">
-              <div class="user_img icon">
-                <img src="./images/user.png" alt="User" />
-              </div>
-              <p id="user" class="username">username</p>
-            </div>
-            <div class="icon">
-              <img class="menu" src="./images/options.png" alt="options" />
-            </div>
-          </div>
-          <div class="post">
-            <img src="./images/posts.jpg" alt="post" />
-          </div>
-          <div class="options">
-            <div class="post_option">
-              <div class="icon">
-                <img src="./images/heart.png" alt="Like" />
-              </div>
-              <div class="icon">
-                <img src="./images/comment.png" alt="Comment" />
-              </div>
-              <div class="icon">
-                <img src="./images/share.png" alt="Share" />
-              </div>
-            </div>
-            <div class="icon">
-              <img src="./images/save.png" alt="Save" />
-            </div>
-          </div>
-          <span class="post_likes">1932 likes</span>
-          <div class="post_info">
-            <span class="post_info_heading">username</span>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur,
-            veniam! 
-          </div>
-          <p class="comment">View all 67 comments</p>
-        </div>
-        <div class="post_container">
-          <div class="user">
-            <div class="user_info">
-              <div class="user_img icon">
-                <img src="./images/user.png" alt="User" />
-              </div>
-              <p class="username">username</p>
-            </div>
-            <div class="icon">
-              <img class="menu" src="./images/options.png" alt="options" />
-            </div>
-          </div>
-          <div class="post">
-            <img src="./images/posts.jpg" alt="post" />
-          </div>
-          <div class="options">
-            <div class="post_option">
-              <div class="icon">
-                <img src="./images/heart.png" alt="Like" />
-              </div>
-              <div class="icon">
-                <img src="./images/comment.png" alt="Comment" />
-              </div>
-              <div class="icon">
-                <img src="./images/share.png" alt="Share" />
-              </div>
-            </div>
-            <div class="icon">
-              <img src="./images/save.png" alt="Save" />
-            </div>
-          </div>
-          <span class="post_likes">1932 likes</span>
-          <div class="post_info">
-            <span class="post_info_heading">username</span>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur,
-            veniam! 
-          </div>
-          <p class="comment">View all 67 comments</p>
-        </div>
+        <div id="posts_container" class="posts"></div>
       </main>
 
       <!-- right side -->
@@ -151,11 +79,16 @@
         <div class="profile user">
           <div class="profile_info user_info">
             <div class="profile_img icon">
-              <img src="./images/user.png" alt="User" />
+              <img
+                id="profile_img_right"
+                class="user_profile"
+                src="./images/user.png"
+                alt="User"
+              />
             </div>
             <div class="profile_detail">
-              <p class="profile_username">userName</p>
-              <p class="profile_name">User</p>
+              <p id="right_username" class="profile_username"></p>
+              <p id="right_user_name" class="profile_name"></p>
             </div>
           </div>
           <button class="profile_btn">Switch</button>
@@ -165,42 +98,7 @@
             <p class="suggest_text">Suggested for you</p>
             <button class="suggest_btn">See All</button>
           </span>
-          <div class="profile user">
-            <div class="profile_info user_info">
-              <div class="profile_img icon">
-                <img src="./images/user.png" alt="User" />
-              </div>
-              <div class="profile_detail">
-                <p class="profile_username">userName</p>
-                <p class="profile_name">User</p>
-              </div>
-            </div>
-            <button class="profile_btn">Switch</button>
-          </div>
-          <div class="profile user">
-            <div class="profile_info user_info">
-              <div class="profile_img icon">
-                <img src="./images/user.png" alt="User" />
-              </div>
-              <div class="profile_detail">
-                <p class="profile_username">userName</p>
-                <p class="profile_name">User</p>
-              </div>
-            </div>
-            <button class="profile_btn">Switch</button>
-          </div>
-          <div class="profile user">
-            <div class="profile_info user_info">
-              <div class="profile_img icon">
-                <img src="./images/user.png" alt="User" />
-              </div>
-              <div class="profile_detail">
-                <p class="profile_username">userName</p>
-                <p class="profile_name">User</p>
-              </div>
-            </div>
-            <button class="profile_btn">Switch</button>
-          </div>
+          <div id="suggestion_users" class="suggestion_users_show"></div>
         </div>
       </aside>
     </div>

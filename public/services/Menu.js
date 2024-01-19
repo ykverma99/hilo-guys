@@ -16,10 +16,24 @@ export async function singleUser(user) {
     console.log(error);
   }
 }
-export async function users() {
+export async function users(count,userId) {
+  let res
   try {
-    const res = await fetch(`http://localhost:3000/users`);
+    if(count>0){
+      res = await fetch(`http://localhost:3000/users?count=${count}&id=${userId}`);
+    }else{
+      res = await fetch(`http://localhost:3000/users`);
+    }
     return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function fetchPosts(){
+  try {
+    const res = await fetch("http://localhost:3000/posts")
+    return await res.json()
   } catch (error) {
     console.log(error);
   }
