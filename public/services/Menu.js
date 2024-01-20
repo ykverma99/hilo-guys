@@ -38,3 +38,5 @@ export async function fetchPosts(){
     console.log(error);
   }
 }
+
+

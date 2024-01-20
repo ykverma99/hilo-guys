@@ -1,10 +1,11 @@
 import express from "express";
 import UserSchema from "../model/UserSchema.js";
-import { Types } from "mongoose";
+import mongoose, { Types } from "mongoose";
 import PostSchema from "../model/PostSchema.js";
 import FriendSchema from "../model/FriendSchema.js";
 import multer from "multer";
 import { promises as fspromises } from "fs";
+import { addAbortListener } from "events";
 
 const router = express.Router();
 const storage = multer.diskStorage({
@@ -19,18 +20,29 @@ const upload = multer({ storage: storage });
 
 router.get("/users", async (req, res) => {
   const count = req.query.count;
-  const userId = req.query.id
+  const userId = req.query.id;
   try {
     let users;
     if (count > 0) {
-      users = await UserSchema.find({_id:{$ne:userId}}).limit(count).populate({
-        path: "friends",
-        populate: {
-          path: "user1 user2",
-          model: "UserSchema",
-        },
-      });
-    }else{
+      const userFriends = await FriendSchema.find({$or:[{user1:userId},{user2:userId}]})
+      const friendUserIds = userFriends.flatMap(friend => [friend.user1, friend.user2]);
+      const excludedUserIds = [...friendUserIds,new mongoose.Types.ObjectId(userId)]
+      users = await UserSchema.find({
+        $and:[
+          {_id: { $ne: userId }},
+          {_id:{$nin:excludedUserIds}}  
+
+        ]     
+      })
+        .limit(count)
+        .populate({
+          path: "friends",
+          populate: {
+            path: "user1 user2",
+            model: "UserSchema",
+          },
+        });
+    } else {
       users = await UserSchema.find().populate({
         path: "friends",
         populate: {
@@ -41,6 +53,7 @@ router.get("/users", async (req, res) => {
     }
     res.status(200).json(users);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Something went wrong" });
   }
 });

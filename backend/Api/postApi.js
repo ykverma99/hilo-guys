@@ -3,6 +3,7 @@ import multer from "multer";
 import UserSchema from "../model/UserSchema.js";
 import PostSchema from "../model/PostSchema.js";
 import { promises as fspromises } from "fs";
+import mongoose from "mongoose";
 
 const router = express.Router();
 const storage = multer.diskStorage({
@@ -119,7 +120,7 @@ router.delete("/post/:id", async (req, res) => {
   try {
     const postId = req.params.id;
     const post = await PostSchema.findById(postId);
-    await fspromises.unlink(post.content);
+    await fspromises.unlink(`public/images/posts/${post.content}`);
     const user = await UserSchema.findById(post.user);
     if (user) {
       user.post.pull(postId);

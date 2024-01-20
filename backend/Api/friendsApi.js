@@ -24,15 +24,28 @@ router.post("/friends", async (req, res) => {
   }
 });
 
-
-router.get("/friends",async(req,res)=>{
+router.get("/friends", async (req, res) => {
   try {
     const friendShip = await FriendSchema.find();
-    res.status(200).json({friendShip})
+    res.status(200).json({ friendShip });
   } catch (error) {
-    res.status(500).json({error:"Something went wrong"})
+    res.status(500).json({ error: "Something went wrong" });
   }
-})
+});
+router.get("/friends/:user1/:user2", async (req, res) => {
+  try {
+    const { user1, user2 } = req.params;
+    const friends = await FriendSchema.findOne({
+      $or: [
+        { user1, user2 },
+        { user1: user2, user2: user1 },
+      ],
+    });
+    res.status(200).json(friends)
+  } catch (error) {
+    return res.status(500).json({ error: "Something went wrong" });
+  }
+});
 router.delete("/friends/:user1/:user2", async (req, res) => {
   try {
     const { user1, user2 } = req.params;

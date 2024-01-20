@@ -101,8 +101,23 @@
           <div id="suggestion_users" class="suggestion_users_show"></div>
         </div>
       </aside>
+      <div id="post_modal" class="post_section">
+        <div class="cross_container">
+          <span id="cross">X</span>
+        </div>
+        <div class="gallery_container">
+          <div class="gallery">
+            <div class="selected_image ">
+              <img src="./images/gallery.png" id="selected_image" alt="">
+            </div>
+            <label class="choose_image_label" for="choose_image">Select Image</label>
+            <input type="file" id="choose_image" class="choose_image" />
+            <input type="text" placeholder="Write a caption" id="caption" class="caption">
+            <button id="upload_image_btn" class="upload_image_btn">Upload</button>
+          </div>
+        </div>
+      </div>
     </div>
-
     <script type="module" src="./app.js"></script>
   </body>
 </html>

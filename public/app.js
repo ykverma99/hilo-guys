@@ -15,6 +15,12 @@ const userName = document.getElementById("right_username");
 const nameOfUser = document.getElementById("right_user_name");
 const rightSideProfileImg = document.getElementById("profile_img_right");
 const suggestionUsers = document.getElementById("suggestion_users");
+const chooseImage = document.getElementById("choose_image");
+const imageSelected = document.getElementById("selected_image");
+const uploadPost = document.getElementById("upload_image_btn");
+const clossPostModal = document.getElementById("cross");
+const openPostModal = document.getElementById("post_link");
+const postModal = document.getElementById("post_modal");
 
 window.addEventListener("load", async () => {
   userProfileIcon.src = user.user.profilePhoto
@@ -111,23 +117,110 @@ window.addEventListener("load", async () => {
   });
 
   const suggestedUser = await users(4, user.user._id);
-  suggestedUser.forEach((user) => {
-    suggestionUsers.innerHTML = `
-    <div class="profile user">
+  suggestedUser.forEach((elm) => {
+    suggestionUsers.innerHTML += `
+            <div class="profile user">
               <div class="profile_info user_info">
                 <div class="profile_img icon">
-                  <img src="${user.profilePhoto ? `${window.location.origin}/images/profilePic/${user.profilePhoto}`:`./images/user.png`}" alt="User" />
+                  <img src="${
+                    elm.profilePhoto
+                      ? `${window.location.origin}/images/profilePic/${elm.profilePhoto}`
+                      : `./images/user.png`
+                  }" alt="User" />
                 </div>
                 <div class="profile_detail">
-                  <p class="profile_username">${user.username}</p>
-                  <p class="profile_name">${user.name}</p>
+                  <p class="profile_username">${elm.username}</p>
+                  <p class="profile_name">${elm.name}</p>
                 </div>
               </div>
-              <button class="profile_btn">friend</button>
+              <button data-user-id="${user.user._id}" data-friend-id="${
+      elm._id
+    }"  class="connect_btn send_friend_btn">connect</button>
             </div>`;
+  });
+
+  document.querySelectorAll(".send_friend_btn").forEach((btn) => {
+    btn.addEventListener("click", async (e) => {
+      const userId = e.target.dataset.userId;
+      const friendId = e.target.dataset.friendId;
+      const friendData = {
+        user1: userId,
+        user2: friendId,
+      };
+      try {
+        const res = await fetch(`http://localhost:3000/friends`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(friendData),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          e.target.classList.remove("connect_btn");
+          e.target.textContent = "Friends";
+          e.target.classList.add("profile_btn");
+        } else {
+          console.log("error");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    });
   });
 });
 
 profileLink.addEventListener("click", () => {
   window.location.href = `/pages/profile.html?user=${user.user.username}`;
+});
+
+openPostModal.addEventListener("click", () => {
+  postModal.style.display = "block";
+});
+clossPostModal.addEventListener("click", () => {
+  postModal.style.display = "none";
+});
+
+chooseImage.addEventListener("change", () => {
+  const file = chooseImage.files[0];
+
+  if (file) {
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+      imageSelected.src = e.target.result;
+    };
+    imageSelected.parentElement.classList.add("after_selected");
+    reader.readAsDataURL(file);
+  } else {
+    imageSelected.src = "./images/gallery.png";
+    imageSelected.parentElement.classList.remove("after_selected");
+  }
+});
+
+uploadPost.addEventListener("click", async () => {
+  try {
+    const file = chooseImage.files[0];
+    const captionInput = document.getElementById("caption");
+    const caption = captionInput.value.length > 0 ? captionInput : "";
+    if (file) {
+      const formData = new FormData();
+      formData.append("postImage", file);
+      formData.append("caption", caption);
+      formData.append("user", user.user._id);
+      const res = await fetch(`http://localhost:3000/upload`,{
+        method:"POST",
+        body:formData
+      })
+      const data = await res.json()
+      if(res.ok){
+        postModal.style.display = "none";
+        window.location.reload()
+      }else{
+        console.log("error");
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
 });
