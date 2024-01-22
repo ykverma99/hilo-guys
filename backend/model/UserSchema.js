@@ -1,4 +1,4 @@
-import mongoose, { Types } from 'mongoose'
+import mongoose from 'mongoose'
 
 const user = new mongoose.Schema({
     username: String,
@@ -6,6 +6,10 @@ const user = new mongoose.Schema({
     email:String,
     password:String,
     profilePhoto:String,
+    interactions:[{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:"Interaction"
+    }],
     friends:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:"FriendSchema"

@@ -23,14 +23,20 @@ const openPostModal = document.getElementById("post_link");
 const postModal = document.getElementById("post_modal");
 
 window.addEventListener("load", async () => {
+  // user profile image show
   userProfileIcon.src = user.user.profilePhoto
     ? `${window.location.origin}/images/profilePic/${user.user.profilePhoto}`
     : "./images/user.png";
-  userName.textContent = user.user.username;
-  nameOfUser.textContent = user.user.name;
-  rightSideProfileImg.src = user.user.profilePhoto
+
+    rightSideProfileImg.src = user.user.profilePhoto
     ? `${window.location.origin}/images/profilePic/${user.user.profilePhoto}`
     : "./images/user.png";
+    
+    // user detail to show
+    nameOfUser.textContent = user.user.name;
+    userName.textContent = user.user.username;
+
+    // all the post to show
   const posts = await fetchPosts();
   posts.map((post) => {
     postsContainer.innerHTML += `
@@ -85,6 +91,8 @@ window.addEventListener("load", async () => {
         </div>`;
   });
 
+// post likes counts
+
   document.querySelectorAll(".heart-icon").forEach((heartIcon) => {
     heartIcon.addEventListener("click", async (event) => {
       const postId = event.target.dataset.postId;
@@ -116,6 +124,8 @@ window.addEventListener("load", async () => {
     });
   });
 
+  // suggested user to show
+
   const suggestedUser = await users(4, user.user._id);
   suggestedUser.forEach((elm) => {
     suggestionUsers.innerHTML += `
@@ -138,6 +148,8 @@ window.addEventListener("load", async () => {
     }"  class="connect_btn send_friend_btn">connect</button>
             </div>`;
   });
+
+  // sending friend requests
 
   document.querySelectorAll(".send_friend_btn").forEach((btn) => {
     btn.addEventListener("click", async (e) => {
@@ -170,10 +182,14 @@ window.addEventListener("load", async () => {
   });
 });
 
+
+// webpage linking
 profileLink.addEventListener("click", () => {
   window.location.href = `/pages/profile.html?user=${user.user.username}`;
 });
 
+
+// post section
 openPostModal.addEventListener("click", () => {
   postModal.style.display = "block";
 });
@@ -202,7 +218,7 @@ uploadPost.addEventListener("click", async () => {
   try {
     const file = chooseImage.files[0];
     const captionInput = document.getElementById("caption");
-    const caption = captionInput.value.length > 0 ? captionInput : "";
+    const caption = captionInput.value.length > 0 ? captionInput.value : "";
     if (file) {
       const formData = new FormData();
       formData.append("postImage", file);

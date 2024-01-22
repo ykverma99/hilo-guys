@@ -10,6 +10,7 @@ import loginUser from './Api/loginUser.js'
 import signupUser from './Api/signupUser.js'
 import friendsApi from './Api/friendsApi.js'
 import postApi from './Api/postApi.js'
+import interactionRoutes from './Api/interactionRoutes.js'
 
 // for static files
 const __filename = fileURLToPath(import.meta.url);
@@ -44,6 +45,7 @@ app.use(loginUser)
 app.use(userApi)
 app.use(friendsApi)
 app.use(postApi)
+app.use(interactionRoutes)
 http.listen(3000, () => {
   console.log("server is running");
 });

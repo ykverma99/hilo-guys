@@ -21,41 +21,46 @@
           </div>
         </a>
         <ul class="links">
-          <a href="#" class="link">
+          <a href="/" class="link">
             <div class="icon">
               <img src="../images/home.svg" alt="Home" />
             </div>
           </a>
-          <a href="#" class="link">
+          <li id="search_link" class="link">
             <div class="icon">
               <img src="../images/search.svg" alt="Search" />
             </div>
-          </a>
-          <a href="#" class="link">
+          </li>
+          <li id="explore_link" class="link">
             <div class="icon">
               <img src="../images/explore.png" alt="Explore" />
             </div>
-          </a>
-          <a href="#" class="link">
+          </li>
+          <a href="./message.html" class="link">
             <div class="icon">
               <img src="../images/message.png" alt="Message" />
             </div>
           </a>
-          <a href="#" class="link">
+          <li id="notification_link" class="link">
             <div class="icon">
               <img src="../images/heart.png" alt="Notification" />
             </div>
-          </a>
-          <a href="#" class="link">
+          </li>
+          <li id="post_link" class="link">
             <div class="icon">
               <img src="../images/plus.png" alt="Post" />
             </div>
-          </a>
-          <a href="#" class="link">
+          </li>
+          <li id="profile_link" class="link">
             <div id="" class="icon">
-              <img id="user_img" class="user_profile" src="../images/user.png" alt="User" />
+              <img
+                id="user_img"
+                class="user_profile"
+                src="../images/user.png"
+                alt="User"
+              />
             </div>
-          </a>
+          </li>
         </ul>
       </aside>
       <div class="center">
@@ -69,56 +74,7 @@
           <h4 class="message_heading">Messages</h4>
           <h5 class="message_req">Requests</h5>
         </div>
-        <div class="message_box">
-          <div class="user">
-            <div class="user_info">
-              <div class="user_img icon">
-                <img src="../images/user.png" alt="User" />
-              </div>
-              <div class="user_detail">
-                <p class="user_username">userName</p>
-                <p class="user_name">User</p>
-              </div>
-            </div>
-            <button class="user_btn"></button>
-          </div>
-          <div class="user">
-            <div class="user_info">
-              <div class="user_img icon">
-                <img src="../images/user.png" alt="User" />
-              </div>
-              <div class="user_detail">
-                <p class="user_username">userName</p>
-                <p class="user_name">User</p>
-              </div>
-            </div>
-            <button class="user_btn"></button>
-          </div>
-          <div class="user">
-            <div class="user_info">
-              <div class="user_img icon">
-                <img src="../images/user.png" alt="User" />
-              </div>
-              <div class="user_detail">
-                <p class="user_username">userName</p>
-                <p class="user_name">User</p>
-              </div>
-            </div>
-            <button class="user_btn"></button>
-          </div>
-          <div class="user">
-            <div class="user_info">
-              <div class="user_img icon">
-                <img src="../images/user.png" alt="User" />
-              </div>
-              <div class="user_detail">
-                <p class="user_username">userName</p>
-                <p class="user_name">User</p>
-              </div>
-            </div>
-            <button class="user_btn"></button>
-          </div>
-        </div>
+        <div id="interaction_list" class="message_box"></div>
       </div>
 
       <!-- message section -->
@@ -133,7 +89,7 @@
           </p>
           <button class="send_message">Send message</button>
         </div>
-        <div class="inbox">
+        <div hidden class="inbox">
           <div class="inbox_friend">
             <div class="user">
               <div class="user_info">
@@ -170,11 +126,65 @@
             </div>
           </div>
           <form class="input_message_container">
-            <input type="text" placeholder="Message..." class="input_message">
+            <input type="text" placeholder="Message..." class="input_message" />
             <button class="send_btn">Send</button>
           </form>
         </div>
       </aside>
+
+      <!-- connecting to the friends -->
+
+      <div hidden class="connect_container">
+        <div class="cross_connect">
+          <span id="cross_connect">X</span>
+        </div>
+        <div class="connect">
+          <div class="connect_friends">
+            <h3 class="friends_connection">Friends</h3>
+            <div class="all_friends">
+              <div class="user">
+                <div class="user_info">
+                  <div class="user_img icon">
+                    <img src="../images/user.png" alt="profile_piic" />
+                  </div>
+                  <div class="user_detail">
+                    <p class="user_username">username</p>
+                    <p class="user_name">name</p>
+                  </div>
+                </div>
+                <button class="connect_btn">Connect</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- post container page -->
+      <div id="post_modal" class="post_section">
+        <div class="cross_container">
+          <span id="cross">X</span>
+        </div>
+        <div class="gallery_container">
+          <div class="gallery">
+            <div class="selected_image">
+              <img src="../images/gallery.png" id="selected_image" alt="" />
+            </div>
+            <label class="choose_image_label" for="choose_image"
+              >Select Image</label
+            >
+            <input type="file" id="choose_image" class="choose_image" />
+            <input
+              type="text"
+              placeholder="Write a caption"
+              id="caption"
+              class="caption"
+            />
+            <button id="upload_image_btn" class="upload_image_btn">
+              Upload
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
     <script src="../scripts/message.js" type="module"></script>
   </body>

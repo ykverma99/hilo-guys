@@ -38,5 +38,13 @@ export async function fetchPosts(){
     console.log(error);
   }
 }
+export async function showAllInteractions(user){
+  try {
+    const res = await fetch(`http://localhost:3000/interaction/${user}`)
+    return await res.json()
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 

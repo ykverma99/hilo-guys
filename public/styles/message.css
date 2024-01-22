@@ -127,13 +127,24 @@ li {
   border-radius: 50%;
   margin: 20px;
 }
+.time_chat{
+  margin: 0 20px;
+
+}
+.no_chats{
+  color: gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+}
 /* right aside */
 .right_aside {
   grid-area: raside;
   /* padding: 60px 20px 0 20px; */
 }
 .start_message {
-  display: none;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -172,6 +183,7 @@ li {
   background-color: var(--primary-color);
   border: 0;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 /* inbox container */
@@ -239,3 +251,145 @@ li {
   font-weight: 600;
 }
 
+/* connect freinds */
+.connect_container{
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.397);
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  text-align: right;
+}
+.connect{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+}
+.connect_friends{
+  background-color: white;
+  height: 40vh;
+  min-width: 20vw;
+  border-radius: 8px;
+  overflow-y: auto;
+}
+.friends_connection{
+  padding: 14px;
+  text-align: center;
+  font-family: var(--secondary-font);
+  font-weight: bold;
+  border-bottom: 1px solid gainsboro;
+}
+.all_friends{
+  padding: 14px;
+}
+.connect_btn{
+  background-color: var(--primary-color);
+  color: white;
+  cursor: pointer;
+  border: 0;
+  padding: 5px 14px;
+  border-radius: 5px;
+  transition: all 0.4s ease-in-out;
+}
+.connect_btn:hover{
+  background-color: var(--secondary-color);
+}
+.cross_connect{
+  padding: 20px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 10vh;
+  color: white;
+  font-size: larger;
+  font-weight: bold ;
+}
+#cross_connect{cursor: pointer;}
+
+/* post section */
+.post_section{
+  display: none;
+  position: fixed;
+  top: 0;
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.397);
+  padding: 20px;
+}
+.cross_container{
+  display: flex;
+  padding: 0 20px;
+  justify-content: flex-end;
+}
+#cross{
+  color: white;
+  font-size: large;
+  font-weight: bold;
+  cursor: pointer;
+}
+.gallery_container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.gallery{
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 35vw;
+  gap: 10px;
+  height: 60vh;
+}
+.after_selected{
+  height: 65%;
+  width: 95%;
+}
+.after_selected>img{
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+.choose_image_label{
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 10px 25px;
+  border-radius: 8px;
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.397);
+  transition: all 0.4s ease-in-out;
+}
+.choose_image_label:hover{
+  background-color: #1f2c3a;
+}
+.choose_image{
+  display: none;
+}
+.upload_image_btn{
+  width: 90%;
+  height:5vh;
+  background-color: var(--primary-color);
+  color: white;
+  border: 0;
+  border-radius: 8px;
+  font-size: large;
+  font-family: var(--secondary-font);
+  font-weight: bold;
+  box-shadow:  0 0 14px #3498dbb2;
+  transition: all 0.4s ease-in-out;
+  cursor: pointer;
+}
+.upload_image_btn:hover{
+  color: var(--primary-color);
+  background-color: white;
+}
+.caption{
+  height: 4vh;
+  border-radius: 25px;
+  border: 1px solid gray;
+  width: 90%;
+  padding: 0 10px;
+}
