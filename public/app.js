@@ -28,70 +28,72 @@ window.addEventListener("load", async () => {
     ? `${window.location.origin}/images/profilePic/${user.user.profilePhoto}`
     : "./images/user.png";
 
-    rightSideProfileImg.src = user.user.profilePhoto
+  rightSideProfileImg.src = user.user.profilePhoto
     ? `${window.location.origin}/images/profilePic/${user.user.profilePhoto}`
     : "./images/user.png";
-    
-    // user detail to show
-    nameOfUser.textContent = user.user.name;
-    userName.textContent = user.user.username;
 
-    // all the post to show
+  // user detail to show
+  nameOfUser.textContent = user.user.name;
+  userName.textContent = user.user.username;
+
+  // all the post to show
   const posts = await fetchPosts();
-  posts.map((post) => {
-    postsContainer.innerHTML += `
-        <div class="post_container">
-          <div class="user">
-            <div class="user_info">
-              <div class="user_img icon">
-                <img class="user_profile" src="${
-                  post.user.profilePhoto
-                    ? `${window.location.origin}/images/profilePic/${post.user.profilePhoto}`
-                    : "./images/user.png"
-                }" alt="User" />
-              </div>
-              <p id="user" class="username">${post.user.username}</p>
-            </div>
-            <div class="icon">
-              <img class="menu" src="./images/options.png" alt="options" />
-            </div>
-          </div>
-          <div class="post">
-            <img src="${window.location.origin}/images/posts/${
-      post.content
-    }" alt="post" />
-          </div>
-          <div class="options">
-            <div class="post_option">
-              <div class="icon">
-                <img class="heart-icon" src="${
-                  post.likes.includes(user.user._id)
-                    ? "./images/red-heart.png"
-                    : "./images/heart.png"
-                }" alt="Like" data-post-id="${post._id}" data-user-id="${
-      user.user._id
-    }" />
+  if (posts.length > 0) {
+    posts.map((post) => {
+      postsContainer.innerHTML += `
+          <div class="post_container">
+            <div class="user">
+              <div class="user_info">
+                <div class="user_img icon">
+                  <img class="user_profile" src="${
+                    post.user?.profilePhoto
+                      ? `${window.location.origin}/images/profilePic/${post.user.profilePhoto}`
+                      : "./images/user.png"
+                  }" alt="User" />
+                </div>
+                <p id="user" class="username">${post.user?.username}</p>
               </div>
               <div class="icon">
-                <img src="./images/comment.png" alt="Comment" />
+                <img class="menu" src="./images/options.png" alt="options" />
+              </div>
+            </div>
+            <div class="post">
+              <img src="${window.location.origin}/images/posts/${
+        post.content
+      }" alt="post" />
+            </div>
+            <div class="options">
+              <div class="post_option">
+                <div class="icon">
+                  <img class="heart-icon" src="${
+                    post.likes.includes(user.user._id)
+                      ? "./images/red-heart.png"
+                      : "./images/heart.png"
+                  }" alt="Like" data-post-id="${post._id}" data-user-id="${
+        user.user._id
+      }" />
+                </div>
+                <div class="icon">
+                  <img src="./images/comment.png" alt="Comment" />
+                </div>
+                <div class="icon">
+                  <img src="./images/share.png" alt="Share" />
+                </div>
               </div>
               <div class="icon">
-                <img src="./images/share.png" alt="Share" />
+                <img src="./images/save.png" alt="Save" />
               </div>
             </div>
-            <div class="icon">
-              <img src="./images/save.png" alt="Save" />
+            <span class="post_likes">${post.likes.length} likes</span>
+            <div class="post_info">
+              <span class="post_info_heading">${post.user.username}</span>
+              ${post.caption}
             </div>
-          </div>
-          <span class="post_likes">${post.likes.length} likes</span>
-          <div class="post_info">
-            <span class="post_info_heading">${post.user.username}</span>
-            ${post.caption}
-          </div>
-        </div>`;
-  });
+          </div>`;
+    });
+  }
 
-// post likes counts
+  // post likes counts
 
   document.querySelectorAll(".heart-icon").forEach((heartIcon) => {
     heartIcon.addEventListener("click", async (event) => {
@@ -159,7 +161,6 @@ window.addEventListener("load", async () => {
         user1: userId,
         user2: friendId,
       };
-      console.log(friendData);
       try {
         const res = await fetch(`http://localhost:3000/friends`, {
           method: "POST",
@@ -170,7 +171,7 @@ window.addEventListener("load", async () => {
         });
         const data = await res.json();
         if (res.ok) {
-          setUser(data)
+          setUser(data);
           e.target.classList.remove("connect_btn");
           e.target.textContent = "Friends";
           e.target.classList.add("profile_btn");
@@ -184,12 +185,10 @@ window.addEventListener("load", async () => {
   });
 });
 
-
 // webpage linking
 profileLink.addEventListener("click", () => {
   window.location.href = `/pages/profile.html?user=${user.user.username}`;
 });
-
 
 // post section
 openPostModal.addEventListener("click", () => {
@@ -226,15 +225,15 @@ uploadPost.addEventListener("click", async () => {
       formData.append("postImage", file);
       formData.append("caption", caption);
       formData.append("user", user.user._id);
-      const res = await fetch(`http://localhost:3000/upload`,{
-        method:"POST",
-        body:formData
-      })
-      const data = await res.json()
-      if(res.ok){
+      const res = await fetch(`http://localhost:3000/upload`, {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (res.ok) {
         postModal.style.display = "none";
-        window.location.reload()
-      }else{
+        window.location.reload();
+      } else {
         console.log("error");
       }
     }

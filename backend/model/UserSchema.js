@@ -6,6 +6,7 @@ const user = new mongoose.Schema({
     email:String,
     password:String,
     profilePhoto:String,
+    socketId:String,
     interactions:[{
       type:mongoose.Schema.Types.ObjectId,
       ref:"Interaction"

@@ -105,7 +105,7 @@
               </div>
             </div>
           </div>
-          <div class="inbox_message">
+          <div id="inbox_messages" class="inbox_message">
             <div class="friend_user chats">
               <div class="icon">
                 <img src="../images/user.png" alt="user" />
@@ -125,9 +125,9 @@
               </div>
             </div>
           </div>
-          <form class="input_message_container">
-            <input type="text" placeholder="Message..." class="input_message" />
-            <button class="send_btn">Send</button>
+          <form id="message_form" class="input_message_container">
+            <input type="text" id="message" placeholder="Message..." class="input_message" />
+            <button id="send" class="send_btn">Send</button>
           </form>
         </div>
       </aside>
@@ -175,6 +175,7 @@
         </div>
       </div>
     </div>
+    <script src="/socket.io/socket.io.js"></script>
     <script src="../scripts/message.js" type="module"></script>
   </body>
 </html>

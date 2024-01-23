@@ -1,5 +1,7 @@
 import { getUsers, showAllInteractions, singleUser } from "../services/Menu.js";
 
+const socket = io();
+
 let user = null;
 document.addEventListener("DOMContentLoaded", () => {
   user = getUsers();
@@ -22,6 +24,8 @@ const openConnectModal = document.getElementById("connect_open");
 const startMessage = document.getElementById("start_msg");
 const inboxBox = document.getElementById("inbox_box");
 const inboxContainer = document.getElementById("inbox_container");
+const messageForm = document.getElementById("message_form");
+const inboxMessages = document.getElementById("inbox_messages");
 
 window.addEventListener("load", async () => {
   const showInteractions = await showAllInteractions(user.user._id);
@@ -40,12 +44,13 @@ window.addEventListener("load", async () => {
     } else {
       time = `${timeInMin}m`;
     }
-    interactionList.innerHTML += `
+    if (interaction.withUserId._id != user.user._id) {
+      interactionList.innerHTML += `
     <div data-friend-username="${
       interaction.withUserId.username
     }" data-friend-id="${interaction.withUserId._id}" data-friend-profile="${
-      interaction.withUserId.profilePhoto
-    }" class="user user_msg_list">
+        interaction.withUserId.profilePhoto
+      }" class="user user_msg_list">
       <div class="user_info">
         <div class="user_img icon">
           <img src="${
@@ -62,35 +67,42 @@ window.addEventListener("load", async () => {
       <small class="time_chat">${time}</small>
       </div>
       `;
+    } else {
+      interactionList.innerHTML += `
+    <div data-friend-username="${
+      interaction.currUserId.username
+    }" data-friend-id="${interaction.currUserId._id}" data-friend-profile="${
+        interaction.currUserId.profilePhoto
+      }" class="user user_msg_list">
+      <div class="user_info">
+        <div class="user_img icon">
+          <img src="${
+            interaction.currUserId.profilePhoto
+              ? `${window.location.origin}/images/profilePic/${interaction.currUserId.profilePhoto}`
+              : `../images/user.png`
+          }" alt="profile_pic" />
+        </div>
+        <div class="user_detail">
+          <p class="user_username">${interaction.currUserId.username}</p>
+          <p class="user_name">${interaction.currUserId.name}</p>
+        </div>
+      </div>
+      <small class="time_chat">${time}</small>
+      </div>
+      `;
+    }
     // <--<button class="user_btn"></button>-->
-    // document.querySelectorAll(".user_msg_list").forEach((friendUser) => {
-    //   friendUser.addEventListener("click", (e) => {
-    //     const friendUsername = e.target.dataset.friendUsername;
-    //     const friendProfile = e.target.dataset?.friendProfile;
-    //     const friendId = e.target.dataset.friendId;
-    //     console.log(friendUsername);
-    //     startMessage.style.display = "none";
-    //     inboxContainer.removeAttribute("hidden");
-    //     const inboxUsername = document.getElementById("inbox_username");
-    //     inboxUsername.textContent = friendUsername;
-    //     const inboxProfileImg = document.getElementById("inbox_profile");
-    //     if(friendProfile != "undefined"){
-    //       inboxProfileImg.src = `${window.location.origin}/images/profilePic/${friendProfile}`
-    //     }else{
-    //       inboxProfileImg.src = "../images/user.png"
-    //     }
-    //   });
-    // });
 
+    // sowing the inbox on click to the friend
     interactionList.addEventListener("click", (e) => {
       const userMsgList = e.target.closest(".user_msg_list");
       if (userMsgList) {
         const friendUsername = userMsgList.dataset.friendUsername;
-        const friendProfile = userMsgList.dataset.friendProfile || '';
+        const friendProfile = userMsgList.dataset.friendProfile || "";
         const friendId = userMsgList.dataset.friendId;
-        console.log(friendUsername,friendProfile);
         startMessage.style.display = "none";
         inboxContainer.removeAttribute("hidden");
+        messageForm.setAttribute("data", `${friendUsername}`);
         const inboxUsername = document.getElementById("inbox_username");
         inboxUsername.textContent = friendUsername;
         const inboxProfileImg = document.getElementById("inbox_profile");
@@ -99,9 +111,61 @@ window.addEventListener("load", async () => {
         } else {
           inboxProfileImg.src = "../images/user.png";
         }
+        socket.emit("join", friendUsername);
       }
     });
   });
+});
+
+function chats(content, className, profileImg) {
+  const chatBox = document.createElement("div");
+  chatBox.className = "chats";
+  chatBox.classList.add(className);
+  const imageContainer = document.createElement("div");
+  imageContainer.className = "icon user_profile";
+  const img = document.createElement("img");
+  img.src = profileImg;
+  imageContainer.appendChild(img);
+  const chat = document.createElement("p");
+  chat.className = "text";
+  chat.textContent = content;
+  if (className == "you") {
+    chatBox.append(chat, imageContainer);
+  } else {
+    chatBox.append(imageContainer, chat);
+  }
+  inboxMessages.append(chatBox);
+}
+
+// Event for sennding the message
+
+messageForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const to = messageForm.getAttribute("data");
+  const content = messageForm.children.message.value;
+  const profileImg = user.user.profilePhoto
+    ? `${window.location.origin}/images/profilePic/${user.user.profilePhoto}`
+    : "../images/user.png";
+  chats(content, "you", profileImg);
+  socket.emit("send:message", { from: user.user.username, to, content });
+});
+
+// Event for recive message
+socket.on("recive:message", async (data) => {
+  try {
+    const user = await singleUser(data.from);
+    console.log(user);
+    const profile = user.profilePhoto
+      ? `${window.location.origin}/images/profilePic/${user.profilePhoto}`
+      : "../images/user.png";
+      if(user){
+        chats(data.content,"friend_user",profile)
+      }else{
+        console.log("error");
+      }
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 // webpage linking
@@ -114,6 +178,7 @@ profileLink.addEventListener("click", () => {
 openConnectModal.addEventListener("click", async () => {
   connectContainer.removeAttribute("hidden");
   const allFriends = document.getElementById("all_friends");
+  console.log(user.user);
   user.user.friends.forEach((friend) => {
     allFriends.innerHTML += `
               <div class="user">

@@ -33,7 +33,14 @@ router.get("/interaction/:userId",async(req,res)=>{
             populate:{
                 path:"withUserId",
                 model:"UserSchema"
-            }
+            },
+        }).populate({
+            path:"interactions",
+            options:{sort:{timestamp:-1}},
+            populate:{
+                path:"currUserId",
+                model:"UserSchema"
+            },
         })
         res.status(200).json(interactUser.interactions)
     } catch (error) {

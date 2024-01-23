@@ -124,7 +124,20 @@ router.patch(
         {
           new: true,
         }
-      );
+      ).populate({
+        path: "friends",
+        populate: {
+          path: "user2",
+          model: "UserSchema",
+        },
+      })
+      .populate({
+        path: "post",
+        populate: {
+          path: "user",
+          model: "UserSchema",
+        },
+      });
       if (!userUpdate) {
         return res.status(404).json({ error: "User not found" });
       }
