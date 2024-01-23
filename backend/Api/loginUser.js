@@ -7,7 +7,7 @@ const router = express.Router();
 router.post("/login", async (req, res) => {
   // const {username,name,password,email} = req.body
   const body = req.body;
-  if ((!body.username && !body.email) || !body.password ) {
+  if ((!body.username && !body.email) || !body.password) {
     res.status(404).json({ error: "Please fill all the fields" });
     return;
   }
@@ -21,17 +21,30 @@ router.post("/login", async (req, res) => {
       return;
     }
     const user = userUsername ?? userEmail;
+    console.log(user);
     const userPassword = user.password;
     if (userPassword) {
       const pass = await bcrypt.compare(body.password, userPassword);
       if (pass) {
-        const userFind = await UserSchema.findById({ _id: user.id }).select(
-          "-password"
-        );
+        const userFind = await UserSchema.findById({ _id: user._id })
+          .populate({
+            path: "friends",
+            populate: {
+              path: "user2",
+              model: "UserSchema",
+            },
+          })
+          .populate({
+            path: "post",
+            populate: {
+              path: "user",
+              model: "UserSchema",
+            },
+          })
+          .select("-password");
         return res.status(200).json(userFind);
-      }else{
-        
-        return res.status(404).json({error:"Enter correct value"});
+      } else {
+        return res.status(404).json({ error: "Enter correct value" });
       }
     }
   } catch (error) {

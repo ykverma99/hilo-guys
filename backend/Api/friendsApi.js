@@ -7,7 +7,7 @@ const router = express.Router();
 router.post("/friends", async (req, res) => {
   try {
     const { user1, user2 } = req.body;
-    const user_1 = await UserSchema.findById(user1);
+    const user_1 = await UserSchema.findById(user1)
     const user_2 = await UserSchema.findById(user2);
     if (!user_1 || !user_2) {
       res.status(404).json({ error: "One or more users not found" });
@@ -18,7 +18,21 @@ router.post("/friends", async (req, res) => {
     user_1.friends.push(friends._id);
     user_2.friends.push(friends._id);
     await Promise.all([user_1.save(), user_2.save()]);
-    res.status(200).json(friends);
+    const user = await UserSchema.findById(user1).populate({
+      path: "friends",
+      populate: {
+        path: "user2",
+        model: "UserSchema",
+      },
+    })
+    .populate({
+      path: "post",
+      populate: {
+        path: "user",
+        model: "UserSchema",
+      },
+    });
+    res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ error: "Something went wrong" });
   }

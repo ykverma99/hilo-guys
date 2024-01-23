@@ -24,6 +24,9 @@ li {
   object-fit: cover;
 }
 .user_profile{
+  border-radius: 50% !important;
+}
+.user_profile>img{
   border-radius: 50%;
 }
 .contianer {

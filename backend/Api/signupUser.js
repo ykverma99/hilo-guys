@@ -29,8 +29,23 @@ router.post("/signup", async (req, res) => {
         email:body.email
     });
     const savedUser = await newUser.save();
-    const { password, ...data } = savedUser._doc;
-    res.status(200).json(data);
+    const userFind = await UserSchema.findById({ _id: savedUser._id })
+          .populate({
+            path: "friends",
+            populate: {
+              path: "user2",
+              model: "UserSchema",
+            },
+          })
+          .populate({
+            path: "post",
+            populate: {
+              path: "user",
+              model: "UserSchema",
+            },
+          })
+          .select("-password");
+    res.status(200).json(userFind);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Something went wrong" });

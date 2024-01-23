@@ -79,7 +79,7 @@
 
       <!-- message section -->
       <aside class="right_aside">
-        <div class="start_message">
+        <div id="start_msg" class="start_message">
           <div class="message_icon">
             <img src="../images/message.png" alt="Message" />
           </div>
@@ -87,17 +87,17 @@
           <p class="message_all">
             Send private photos and messages to a friend or group
           </p>
-          <button class="send_message">Send message</button>
+          <button id="connect_open" class="send_message">Send message</button>
         </div>
-        <div hidden class="inbox">
-          <div class="inbox_friend">
+        <div  hidden id="inbox_container" class="inbox">
+          <div id="inbox" class="inbox_friend">
             <div class="user">
               <div class="user_info">
                 <div class="user_img icon">
-                  <img src="../images/user.png" alt="User" />
+                  <img id="inbox_profile" src="../images/user.png" alt="User" />
                 </div>
                 <div class="user_detail">
-                  <p class="user_username">userName</p>
+                  <p class="user_username" id="inbox_username">userName</p>
                 </div>
               </div>
               <div class="info">
@@ -134,26 +134,15 @@
 
       <!-- connecting to the friends -->
 
-      <div hidden class="connect_container">
+      <div hidden id="connect_container" class="connect_container">
         <div class="cross_connect">
           <span id="cross_connect">X</span>
         </div>
         <div class="connect">
           <div class="connect_friends">
             <h3 class="friends_connection">Friends</h3>
-            <div class="all_friends">
-              <div class="user">
-                <div class="user_info">
-                  <div class="user_img icon">
-                    <img src="../images/user.png" alt="profile_piic" />
-                  </div>
-                  <div class="user_detail">
-                    <p class="user_username">username</p>
-                    <p class="user_name">name</p>
-                  </div>
-                </div>
-                <button class="connect_btn">Connect</button>
-              </div>
+            <div id="all_friends" class="all_friends">
+              
             </div>
           </div>
         </div>

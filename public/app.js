@@ -1,4 +1,4 @@
-import { fetchPosts, getUsers, users } from "./services/Menu.js";
+import { fetchPosts, getUsers, setUser, users } from "./services/Menu.js";
 
 let user = null;
 document.addEventListener("DOMContentLoaded", () => {
@@ -131,7 +131,7 @@ window.addEventListener("load", async () => {
     suggestionUsers.innerHTML += `
             <div class="profile user">
               <div class="profile_info user_info">
-                <div class="profile_img icon">
+                <div class="profile_img user_profile icon">
                   <img src="${
                     elm.profilePhoto
                       ? `${window.location.origin}/images/profilePic/${elm.profilePhoto}`
@@ -159,6 +159,7 @@ window.addEventListener("load", async () => {
         user1: userId,
         user2: friendId,
       };
+      console.log(friendData);
       try {
         const res = await fetch(`http://localhost:3000/friends`, {
           method: "POST",
@@ -169,6 +170,7 @@ window.addEventListener("load", async () => {
         });
         const data = await res.json();
         if (res.ok) {
+          setUser(data)
           e.target.classList.remove("connect_btn");
           e.target.textContent = "Friends";
           e.target.classList.add("profile_btn");

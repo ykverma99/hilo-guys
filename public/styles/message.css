@@ -99,11 +99,16 @@ li {
   align-items: center;
   margin-bottom: 16px;
 }
+.user_msg_list{
+  cursor: pointer;
+}
 .user_img {
   height: 40px !important;
   width: 40px !important;
+  border-radius: 50%;
 }
 .user_img > img {
+  border-radius: 50%;
   height: 100% !important;
   width: 100% !important;
   object-fit: cover;
