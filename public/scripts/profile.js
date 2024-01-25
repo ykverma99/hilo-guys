@@ -24,6 +24,7 @@ const postCount = document.getElementById("post");
 const friendsCount = document.getElementById("friends");
 const noPost = document.getElementById("no_post");
 
+
 modal.addEventListener("click", () => {
   selectImageContainer.style.display = "flex";
 });
@@ -73,7 +74,11 @@ window.addEventListener("load", async () => {
   if (user._id === userAuth.user._id) {
     modal.removeAttribute("hidden");
     profileBtn_1.textContent = "Edit profile";
-    profileBtn_2.textContent = "settings";
+    profileBtn_2.textContent = "Sign Out";
+    profileBtn_2.addEventListener("click",()=>{
+      window.localStorage.removeItem("user")
+      window.location.reload()
+    })
   } else {
     profileBtn_1.textContent = "Friends";
     profileBtn_2.textContent = "Message";

@@ -38,7 +38,20 @@ router.get("/users", async (req, res) => {
         .populate({
           path: "friends",
           populate: {
-            path: "user1 user2",
+            path: "user2",
+            model: "UserSchema",
+          },
+        }).populate({
+          path: "friends",
+          populate: {
+            path: "user1",
+            model: "UserSchema",
+          },
+        })
+        .populate({
+          path: "post",
+          populate: {
+            path: "user",
             model: "UserSchema",
           },
         });
@@ -71,6 +84,12 @@ router.get("/user/:identifier", async (req, res) => {
             path: "user2",
             model: "UserSchema",
           },
+        }).populate({
+          path: "friends",
+          populate: {
+            path: "user1",
+            model: "UserSchema",
+          },
         })
         .populate({
           path: "post",
@@ -85,6 +104,12 @@ router.get("/user/:identifier", async (req, res) => {
           path: "friends",
           populate: {
             path: "user2",
+            model: "UserSchema",
+          },
+        }).populate({
+          path: "friends",
+          populate: {
+            path: "user1",
             model: "UserSchema",
           },
         })
@@ -128,6 +153,12 @@ router.patch(
         path: "friends",
         populate: {
           path: "user2",
+          model: "UserSchema",
+        },
+      }).populate({
+        path: "friends",
+        populate: {
+          path: "user1",
           model: "UserSchema",
         },
       })

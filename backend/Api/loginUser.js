@@ -27,20 +27,26 @@ router.post("/login", async (req, res) => {
       const pass = await bcrypt.compare(body.password, userPassword);
       if (pass) {
         const userFind = await UserSchema.findById({ _id: user._id })
-          .populate({
-            path: "friends",
-            populate: {
-              path: "user2",
-              model: "UserSchema",
-            },
-          })
-          .populate({
-            path: "post",
-            populate: {
-              path: "user",
-              model: "UserSchema",
-            },
-          })
+        .populate({
+          path: "friends",
+          populate: {
+            path: "user2",
+            model: "UserSchema",
+          },
+        }).populate({
+          path: "friends",
+          populate: {
+            path: "user1",
+            model: "UserSchema",
+          },
+        })
+        .populate({
+          path: "post",
+          populate: {
+            path: "user",
+            model: "UserSchema",
+          },
+        })
           .select("-password");
         return res.status(200).json(userFind);
       } else {

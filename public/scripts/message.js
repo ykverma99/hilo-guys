@@ -1,13 +1,25 @@
-import { getUsers, showAllInteractions, singleUser } from "../services/Menu.js";
+import {
+  getUsers,
+  isInteraction,
+  setUser,
+  showAllInteractions,
+  singleUser,
+} from "../services/Menu.js";
 
 const socket = io();
 
 let user = null;
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async() => {
   user = getUsers();
   if (!user) {
     window.location.replace("http://localhost:3000/pages/login.html");
   }
+try {
+  const res = await singleUser(user.user._id)
+  setUser(res)
+} catch (error) {
+  console.log(error);
+}
 });
 
 const profileLink = document.getElementById("profile_link");
@@ -28,6 +40,7 @@ const messageForm = document.getElementById("message_form");
 const inboxMessages = document.getElementById("inbox_messages");
 
 window.addEventListener("load", async () => {
+  user = getUsers()
   const showInteractions = await showAllInteractions(user.user._id);
   if (showInteractions.length == 0) {
     interactionList.innerHTML = `<h2 class="no_chats">No Chats</h2>`;
@@ -48,7 +61,7 @@ window.addEventListener("load", async () => {
       interactionList.innerHTML += `
     <div data-friend-username="${
       interaction.withUserId.username
-    }" data-friend-id="${interaction.withUserId._id}" data-friend-profile="${
+    }" data-interaction-id="${interaction._id}" data-friend-profile="${
         interaction.withUserId.profilePhoto
       }" class="user user_msg_list">
       <div class="user_info">
@@ -71,7 +84,7 @@ window.addEventListener("load", async () => {
       interactionList.innerHTML += `
     <div data-friend-username="${
       interaction.currUserId.username
-    }" data-friend-id="${interaction.currUserId._id}" data-friend-profile="${
+    }" data-interaction-id="${interaction._id}" data-friend-profile="${
         interaction.currUserId.profilePhoto
       }" class="user user_msg_list">
       <div class="user_info">
@@ -94,24 +107,49 @@ window.addEventListener("load", async () => {
     // <--<button class="user_btn"></button>-->
 
     // sowing the inbox on click to the friend
-    interactionList.addEventListener("click", (e) => {
+    interactionList.addEventListener("click", async (e) => {
       const userMsgList = e.target.closest(".user_msg_list");
-      if (userMsgList) {
-        const friendUsername = userMsgList.dataset.friendUsername;
-        const friendProfile = userMsgList.dataset.friendProfile || "";
-        const friendId = userMsgList.dataset.friendId;
-        startMessage.style.display = "none";
-        inboxContainer.removeAttribute("hidden");
-        messageForm.setAttribute("data", `${friendUsername}`);
-        const inboxUsername = document.getElementById("inbox_username");
-        inboxUsername.textContent = friendUsername;
-        const inboxProfileImg = document.getElementById("inbox_profile");
-        if (friendProfile != "undefined") {
-          inboxProfileImg.src = `${window.location.origin}/images/profilePic/${friendProfile}`;
-        } else {
-          inboxProfileImg.src = "../images/user.png";
+      try {
+        if (userMsgList) {
+          const friendUsername = userMsgList.dataset.friendUsername;
+          const friendProfile = userMsgList.dataset.friendProfile || "";
+          const interactionId = userMsgList.dataset.interactionId;
+          const updateInteraction = await fetch(
+            `http://localhost:3000/interaction/${interactionId}`,
+            {
+              method: "PATCH",
+            }
+          );
+          const interaction = await updateInteraction.json();
+          if (updateInteraction.ok) {
+            const timestamp = new Date(interaction.timestamp);
+            const currentTime = new Date();
+            const timeDiffrence = currentTime.getTime() - timestamp.getTime();
+            const timeInMin = Math.floor(timeDiffrence / (1000 * 60));
+            const timeInHour = Math.floor(timeDiffrence / (1000 * 60 * 60));
+            let time;
+            if (timeInMin >= 60) {
+              time = `${timeInHour}h`;
+            } else {
+              time = `${timeInMin}m`;
+            }
+            const interactTimeUpdate = userMsgList.children[1].textContent = time
+            startMessage.style.display = "none";
+            inboxContainer.removeAttribute("hidden");
+            messageForm.setAttribute("data", `${friendUsername}`);
+            const inboxUsername = document.getElementById("inbox_username");
+            inboxUsername.textContent = friendUsername;
+            const inboxProfileImg = document.getElementById("inbox_profile");
+            if (friendProfile != "undefined") {
+              inboxProfileImg.src = `${window.location.origin}/images/profilePic/${friendProfile}`;
+            } else {
+              inboxProfileImg.src = "../images/user.png";
+            }
+            socket.emit("join", friendUsername);
+          }
         }
-        socket.emit("join", friendUsername);
+      } catch (error) {
+        console.log(error);
       }
     });
   });
@@ -142,27 +180,31 @@ function chats(content, className, profileImg) {
 messageForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const to = messageForm.getAttribute("data");
-  const content = messageForm.children.message.value;
+  const content = messageForm.children.message;
   const profileImg = user.user.profilePhoto
     ? `${window.location.origin}/images/profilePic/${user.user.profilePhoto}`
     : "../images/user.png";
-  chats(content, "you", profileImg);
-  socket.emit("send:message", { from: user.user.username, to, content });
+  chats(content.value, "you", profileImg);
+  socket.emit("send:message", {
+    from: user.user.username,
+    to,
+    content: content.value,
+  });
+  content.value = "";
 });
 
 // Event for recive message
 socket.on("recive:message", async (data) => {
   try {
     const user = await singleUser(data.from);
-    console.log(user);
     const profile = user.profilePhoto
       ? `${window.location.origin}/images/profilePic/${user.profilePhoto}`
       : "../images/user.png";
-      if(user){
-        chats(data.content,"friend_user",profile)
-      }else{
-        console.log("error");
-      }
+    if (user) {
+      chats(data.content, "friend_user", profile);
+    } else {
+      console.log("error");
+    }
   } catch (error) {
     console.log(error);
   }
@@ -178,9 +220,30 @@ profileLink.addEventListener("click", () => {
 openConnectModal.addEventListener("click", async () => {
   connectContainer.removeAttribute("hidden");
   const allFriends = document.getElementById("all_friends");
-  console.log(user.user);
+  allFriends.innerHTML = "";
   user.user.friends.forEach((friend) => {
-    allFriends.innerHTML += `
+    if (user.user._id == friend.user2._id) {
+      allFriends.innerHTML += `
+              <div class="user">
+                <div class="user_info">
+                  <div class="user_img icon">
+                    <img src="${
+                      friend.user1.profilePhoto
+                        ? `${window.location.origin}/images/profilePic/${friend.user1.profilePhoto}`
+                        : `../images/user.png`
+                    }" alt="profile_piic" />
+                  </div>
+                  <div class="user_detail">
+                    <p class="user_username">${friend.user1.username}</p>
+                    <p class="user_name">${friend.user1.name}</p>
+                  </div>
+                </div>
+                <button data-user-id="${user.user._id}" data-friend-id="${
+        friend.user1._id
+      }"  class="connect_btn">Chat</button>
+              </div>`;
+    } else {
+      allFriends.innerHTML += `
               <div class="user">
                 <div class="user_info">
                   <div class="user_img icon">
@@ -196,9 +259,10 @@ openConnectModal.addEventListener("click", async () => {
                   </div>
                 </div>
                 <button data-user-id="${user.user._id}" data-friend-id="${
-      friend.user2._id
-    }"  class="connect_btn">Chat</button>
+        friend.user2._id
+      }"  class="connect_btn">Chat</button>
               </div>`;
+    }
   });
 
   // button to add in message lists
@@ -211,21 +275,26 @@ openConnectModal.addEventListener("click", async () => {
         withUserId: friendId,
         currUserId: userId,
       };
-      try {
-        const res = await fetch(`http://localhost:3000/interaction`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
-        if (res.ok) {
-          window.location.reload();
-        } else {
-          console.log("error");
+      const isInteract = await isInteraction(userId, friendId);
+      if (isInteract.message) {
+        try {
+          const res = await fetch(`http://localhost:3000/interaction`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
+          if (res.ok) {
+            window.location.reload();
+          } else {
+            console.log("error");
+          }
+        } catch (error) {
+          console.log(error);
         }
-      } catch (error) {
-        console.log(error);
+      }else{
+        window.location.reload()
       }
     });
   });

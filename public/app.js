@@ -171,6 +171,7 @@ window.addEventListener("load", async () => {
         });
         const data = await res.json();
         if (res.ok) {
+          console.log(data);
           setUser(data);
           e.target.classList.remove("connect_btn");
           e.target.textContent = "Friends";

@@ -24,6 +24,12 @@ router.post("/friends", async (req, res) => {
         path: "user2",
         model: "UserSchema",
       },
+    }).populate({
+      path: "friends",
+      populate: {
+        path: "user1",
+        model: "UserSchema",
+      },
     })
     .populate({
       path: "post",

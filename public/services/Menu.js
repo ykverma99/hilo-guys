@@ -46,5 +46,17 @@ export async function showAllInteractions(user){
     console.log(error);
   }
 }
+export async function isInteraction(user1,user2){
+  try {
+    const res = await fetch(`http://localhost:3000/interaction/${user1}/${user2}`)
+    if(res.ok){
+      return await res.json()
+    }else{
+      return null
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 

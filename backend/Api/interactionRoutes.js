@@ -47,6 +47,38 @@ router.get("/interaction/:userId",async(req,res)=>{
         res.status(500).json({error:"Something went wrong"})
     }
 })
+router.get("/interaction/:currUserId/:withUserId",async(req,res)=>{
+    try {
+        const {withUserId,currUserId} = req.params
+        const interact = await Interaction.findOne({
+            $or:[
+                {withUserId,currUserId},
+                {withUserId:currUserId,currUserId:withUserId}
+            ]
+        })
+        if(!interact){
+            return res.status(200).json({message:"No Interaction found"})
+        }
+        res.status(200).json(interact)
+    } catch (error) {
+        res.status(500).json({message:"Something went wrong"})
+    }
+})
+
+router.patch("/interaction/:interactionId",async(req,res)=>{
+    try {
+        const interactionId = req.params.interactionId
+        const interact = await Interaction.findByIdAndUpdate(interactionId,{
+            timestamp:Date.now()
+        },{new:true})
+        if(!interact){
+            return res.status(400).json({message:"no Found"})
+        }
+        res.status(200).json(interact)
+    } catch (error) {
+        res.status(500).json({message:"Something went wrong"})
+    }
+})
 
 router.delete("/interaction/:currUserId/:withUserId",async(req,res)=>{
     try {
