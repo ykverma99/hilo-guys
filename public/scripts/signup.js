@@ -4,7 +4,7 @@ let user = null;
 document.addEventListener("DOMContentLoaded", () => {
   user = getUsers();
   if (user) {
-    window.location.replace("http://localhost:3000/");
+    window.location.replace("/");
   }
 });
 
@@ -22,7 +22,7 @@ form.addEventListener("submit", async (e) => {
         email,name,username,password
     }
     console.log(userData, "us");
-    const res = await fetch("http://localhost:3000/signup", {
+    const res = await fetch("/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -32,7 +32,7 @@ form.addEventListener("submit", async (e) => {
     const data = await res.json();
     if (res.ok) {
       setUser(data);
-      window.location.replace("http://localhost:3000/");
+      window.location.replace("/");
     } else {
         // error.style.display = "block"
         console.log(res.status);

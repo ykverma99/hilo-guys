@@ -4,7 +4,7 @@ let user = null;
 document.addEventListener("DOMContentLoaded", () => {
   user = getUsers();
   if (!user) {
-    window.location.replace("http://localhost:3000/pages/login.html");
+    window.location.replace("/pages/login.html");
   }
 });
 
@@ -101,7 +101,7 @@ window.addEventListener("load", async () => {
       const userId = event.target.dataset.userId;
       try {
         const res = await fetch(
-          `http://localhost:3000/post/${postId}/${userId}`,
+          `/post/${postId}/${userId}`,
           {
             method: "PATCH",
           }
@@ -162,7 +162,7 @@ window.addEventListener("load", async () => {
         user2: friendId,
       };
       try {
-        const res = await fetch(`http://localhost:3000/friends`, {
+        const res = await fetch(`/friends`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -226,7 +226,7 @@ uploadPost.addEventListener("click", async () => {
       formData.append("postImage", file);
       formData.append("caption", caption);
       formData.append("user", user.user._id);
-      const res = await fetch(`http://localhost:3000/upload`, {
+      const res = await fetch(`/upload`, {
         method: "POST",
         body: formData,
       });

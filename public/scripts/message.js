@@ -12,7 +12,7 @@ let user = null;
 document.addEventListener("DOMContentLoaded", async() => {
   user = getUsers();
   if (!user) {
-    window.location.replace("http://localhost:3000/pages/login.html");
+    window.location.replace("/pages/login.html");
   }
 try {
   const res = await singleUser(user.user._id)
@@ -115,7 +115,7 @@ window.addEventListener("load", async () => {
           const friendProfile = userMsgList.dataset.friendProfile || "";
           const interactionId = userMsgList.dataset.interactionId;
           const updateInteraction = await fetch(
-            `http://localhost:3000/interaction/${interactionId}`,
+            `/interaction/${interactionId}`,
             {
               method: "PATCH",
             }
@@ -278,7 +278,7 @@ openConnectModal.addEventListener("click", async () => {
       const isInteract = await isInteraction(userId, friendId);
       if (isInteract.message) {
         try {
-          const res = await fetch(`http://localhost:3000/interaction`, {
+          const res = await fetch(`/interaction`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -340,7 +340,7 @@ uploadPost.addEventListener("click", async () => {
       formData.append("postImage", file);
       formData.append("caption", caption);
       formData.append("user", user.user._id);
-      const res = await fetch(`http://localhost:3000/upload`, {
+      const res = await fetch(`/upload`, {
         method: "POST",
         body: formData,
       });

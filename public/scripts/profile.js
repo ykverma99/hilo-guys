@@ -4,7 +4,7 @@ let userAuth = null;
 document.addEventListener("DOMContentLoaded", () => {
   userAuth = getUsers();
   if (!userAuth) {
-    window.location.replace("http://localhost:3000/pages/login.html");
+    window.location.replace("/pages/login.html");
   }
 });
 
@@ -38,7 +38,7 @@ profileBtn.addEventListener("click", async (event) => {
     if (profileInputPic.files.length > 0) {
       formData.append("profilePhoto", profileInputPic.files[0]);
       const res = await fetch(
-        `http://localhost:3000/user/${userAuth.user._id}`,
+        `/user/${userAuth.user._id}`,
         {
           method: "PATCH",
           body: formData,
@@ -105,7 +105,7 @@ window.addEventListener("load", async () => {
       heartImg.addEventListener("click", async () => {
         try {
           const res = await fetch(
-            `http://localhost:3000/post/${post._id}/${user._id}`,
+            `/post/${post._id}/${user._id}`,
             {
               method: "PATCH",
             }

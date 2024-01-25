@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   user = getUsers();
   console.log(user,"dom");
   if (user) {
-    window.location.replace("http://localhost:3000/");
+    window.location.replace("/");
   }
 });
 
@@ -30,7 +30,7 @@ form.addEventListener("submit", async (e) => {
       };
     }
     console.log(userData, "us");
-    const res = await fetch("http://localhost:3000/login", {
+    const res = await fetch("/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -40,7 +40,7 @@ form.addEventListener("submit", async (e) => {
     const data = await res.json();
     if (res.ok) {
       setUser(data);
-      window.location.replace("http://localhost:3000/");
+      window.location.replace("/");
     } else {
         error.style.display = "block"
     }

@@ -10,7 +10,7 @@ export function getUsers() {
 
 export async function singleUser(user) {
   try {
-    const res = await fetch(`http://localhost:3000/user/${user}`);
+    const res = await fetch(`/user/${user}`);
     return await res.json();
   } catch (error) {
     console.log(error);
@@ -20,9 +20,9 @@ export async function users(count,userId) {
   let res
   try {
     if(count>0){
-      res = await fetch(`http://localhost:3000/users?count=${count}&id=${userId}`);
+      res = await fetch(`/users?count=${count}&id=${userId}`);
     }else{
-      res = await fetch(`http://localhost:3000/users`);
+      res = await fetch(`/users`);
     }
     return await res.json();
   } catch (error) {
@@ -32,7 +32,7 @@ export async function users(count,userId) {
 
 export async function fetchPosts(){
   try {
-    const res = await fetch("http://localhost:3000/posts")
+    const res = await fetch("/posts")
     return await res.json()
   } catch (error) {
     console.log(error);
@@ -40,7 +40,7 @@ export async function fetchPosts(){
 }
 export async function showAllInteractions(user){
   try {
-    const res = await fetch(`http://localhost:3000/interaction/${user}`)
+    const res = await fetch(`/interaction/${user}`)
     return await res.json()
   } catch (error) {
     console.log(error);
@@ -48,7 +48,7 @@ export async function showAllInteractions(user){
 }
 export async function isInteraction(user1,user2){
   try {
-    const res = await fetch(`http://localhost:3000/interaction/${user1}/${user2}`)
+    const res = await fetch(`/interaction/${user1}/${user2}`)
     if(res.ok){
       return await res.json()
     }else{
